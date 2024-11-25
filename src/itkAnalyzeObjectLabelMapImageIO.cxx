@@ -109,7 +109,6 @@ AnalyzeObjectLabelMapImageIO::Read(void * buffer)
   // Analyze object files are run length encoded a plane at a time.
 
   int    index = 0;
-  int    voxel_count_sum = 0;
   auto * tobuf = (unsigned char *)buffer;
 
   // The following commented out code is a starting attempt at streaming.
@@ -206,10 +205,6 @@ AnalyzeObjectLabelMapImageIO::Read(void * buffer)
         tobuf[index] = i.voxel_value;
         index++;
       }
-      voxel_count_sum += i.voxel_count;
-      //          myfile <<"index = "<<index
-      //            << " voxel_count_sum= " << voxel_count_sum
-      //            << " Volume size = "<<VolumeSize<<std::endl;
       if (index > VolumeSize)
       {
         itkDebugMacro(<< "BREAK!\n");
@@ -348,28 +343,23 @@ AnalyzeObjectLabelMapImageIO::ReadImageInformation()
 
   switch (this->GetNumberOfDimensions())
   {
-    case 4:
-    {
+    case 4: {
       this->SetDimensions(3, header[5]);
       this->SetSpacing(3, 1);
     }
-    case 3:
-    {
+    case 3: {
       this->SetDimensions(2, header[3]);
       this->SetSpacing(2, 1);
     }
-    case 2:
-    {
+    case 2: {
       this->SetDimensions(1, header[2]);
       this->SetSpacing(1, 1);
     }
-    case 1:
-    {
+    case 1: {
       this->SetDimensions(0, header[1]);
       this->SetSpacing(0, 1);
     }
-    default:
-    {
+    default: {
     }
     break;
   }
@@ -379,12 +369,10 @@ AnalyzeObjectLabelMapImageIO::ReadImageInformation()
 
   switch (this->GetNumberOfDimensions())
   {
-    case 4:
-    {
+    case 4: {
       m_Origin[3] = 0;
     }
-    case 3:
-    {
+    case 3: {
       dirx[2] = 0;
       diry[2] = 0;
       dirz[2] = 1;
@@ -395,22 +383,19 @@ AnalyzeObjectLabelMapImageIO::ReadImageInformation()
 
       m_Origin[2] = 0;
     }
-    case 2:
-    {
+    case 2: {
       dirx[1] = 0;
       diry[1] = 1;
       diry[0] = 0;
 
       m_Origin[1] = 0;
     }
-    case 1:
-    {
+    case 1: {
       dirx[0] = 1;
       m_Origin[0] = 0;
     }
     break;
-    default:
-    {
+    default: {
       itkDebugMacro(<< "Error:  Setting the steps has an error" << std::endl);
     }
     break;
@@ -478,20 +463,16 @@ AnalyzeObjectLabelMapImageIO ::WriteImageInformation()
 
   switch (this->GetNumberOfDimensions())
   {
-    case 4:
-    {
+    case 4: {
       header[5] = this->GetDimensions(3);
     }
-    case 3:
-    {
+    case 3: {
       header[3] = this->GetDimensions(2);
     }
-    case 2:
-    {
+    case 2: {
       header[2] = this->GetDimensions(1);
     }
-    case 1:
-    {
+    case 1: {
       header[1] = this->GetDimensions(0);
     }
     break;
